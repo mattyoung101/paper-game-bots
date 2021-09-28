@@ -1,37 +1,43 @@
 package guanpai.analysis
 
 /**
- * Finds bombs: triple ace, or four of any card. Also potential +1 of any other card
+ * Finds bombs: triple ace, or four of any card. Also, there is a potential +1 for any other card
  */
 class BombAnalyser : HandAnalyser {
+    /** For each bomb, we can also add +1 of any card, so consider that here */
+    private fun considerPlusOnes(out: MutableList<List<String>>, move: List<String>, hand: List<String>){
+        // create a copy of the hand with the first occurrence of each card in the bomb removed
+        // performance: may be a more optimal method than copy and removeAll
+        val handWithoutMove = hand.toMutableList()
+        handWithoutMove.removeAll(move)
+
+        for (card in handWithoutMove){
+            // copy the move and return a new one with this particular +1
+            val newMove = move.toMutableList().apply { add(card) }
+            out.add(newMove)
+        }
+    }
+
     override fun analyseHand(hand: List<String>): List<List<String>> {
         val out = mutableListOf<List<String>>()
 
-        // kinda dumb to hardcode this, but whatever
+        // kinda dumb to hardcode this, but whatever: search for aces (only require 3)
         val aces = hand.filter { it == "A" }
         if (aces.size == 3){
-            out.add(listOf("A", "A", "A"))
+            out.add(aces)
+            considerPlusOnes(out, aces, hand)
         }
 
         // now check for 4 of any card
-        val handNoAces = hand.filter { it != "A " }
+        val handNoAces = hand.filter { it != "A" }
         for (card in handNoAces){
             val matchingCards = handNoAces.filter { it == card }
 
             // it shouldn't be possible to have > 4, because there are only 4 suites
             if (matchingCards.size == 4){
-                // we have a bomb!
+                // have 4 of the same card, so bomb!
                 out.add(matchingCards)
-
-                // also consider our plus ones here
-                val handWithoutMove = handNoAces.toMutableList()
-                // create a copy of the hand with the first occurrence of each card in the bomb removed
-                handWithoutMove.removeAll(matchingCards)
-                for (extra in handWithoutMove){
-                    val newMove = matchingCards.toMutableList()
-                    newMove.add(extra)
-                    out.add(newMove)
-                }
+                considerPlusOnes(out, matchingCards, handNoAces)
             }
         }
 

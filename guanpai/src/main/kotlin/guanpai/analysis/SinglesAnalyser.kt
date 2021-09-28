@@ -5,11 +5,7 @@ package guanpai.analysis
  */
 class SinglesAnalyser : HandAnalyser {
     override fun analyseHand(hand: List<String>): List<List<String>> {
-        val out = mutableListOf<List<String>>()
-        for (card in hand){
-            out.add(listOf(card))
-        }
-        return out
+        return hand.map { listOf(it )}
     }
 
 }

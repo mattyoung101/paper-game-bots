@@ -3,7 +3,10 @@ package guanpai.analysis
 object Analysis {
     private val analysers: Array<HandAnalyser> = arrayOf(
         SinglesAnalyser(),
-        CountingAnalyser())
+        SameCardAnalyser(),
+        LadderAnalyser(),
+        BombAnalyser()
+    )
 
     /**
      * Applies all the registered [HandAnalyser]s to the [hand] (which may not be sorted)

@@ -26,6 +26,15 @@ val CARD_COMPARATOR = Comparator<String> { a, b ->
 private val suite = arrayOf("3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
 
 /**
- * Full guan pai deck
+ * Full Guan Pai deck
  */
 val DECK = arrayOf(*suite, *suite, *suite, *suite, "A", "A", "A", "2")
+
+// may need this in future to score moves
+enum class MoveType {
+    SINGLE,
+    DOUBLE,
+    TRIPLE,
+    LADDER,
+    BOMB
+}
