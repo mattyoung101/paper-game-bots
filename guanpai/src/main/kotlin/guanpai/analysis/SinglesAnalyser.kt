@@ -5,7 +5,7 @@ package guanpai.analysis
  */
 class SinglesAnalyser : HandAnalyser {
     override fun analyseHand(hand: List<String>): List<List<String>> {
-        return hand.map { listOf(it )}
+        return hand.map { listOf(it) }
     }
 
 }

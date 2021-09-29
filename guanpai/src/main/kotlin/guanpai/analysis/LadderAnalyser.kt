@@ -19,6 +19,7 @@ class LadderAnalyser : HandAnalyser {
 
     override fun analyseHand(hand: List<String>): List<List<String>> {
         // store output as set to enforce unique stacks of cards
+        // TODO check if should be unique
         val out = mutableSetOf<List<String>>()
         // TODO may not actually need to sort hand? (with new algorithm)
         val sortedHand = hand.sortedWith(CARD_COMPARATOR)

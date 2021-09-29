@@ -20,35 +20,45 @@ class NeighboursAnalyser : HandAnalyser {
         return groups.firstOrNull { scoreGroup(it) - scoreGroup(current) == 1 }
     }
 
-    /** Generates a possible ladder with the given card groups of the given size */
-    private fun getLadder(groups: List<List<String>>, initial: List<String>, size: Int){
+    /**
+     * Generates a possible ladder with the given card groups (e.g. twos or threes) and adds to the output
+     */
+    private fun addLadder(groups: List<List<String>>, initial: List<String>, out: MutableList<List<String>>) {
+        // ladders must be unique, we will still get correct output if there are duplicate cards in the hand
+        // since we check them twice in the function that calls addLadder
+        val ladders = mutableSetOf<List<List<String>>>()
         val stack = mutableListOf<List<String>>()
         stack.add(initial)
-        var previousCard = initial
+        var previousGroup = initial
 
-        // use very similar logic to LadderAnalyser
-//        while (true){
-//            // try and see if we can count to another card
-//            val nextGroup = getNextGroup(previousCard, groups)
-//            if (nextGroup != null){
-//                // we can keep counting, update and continue
-//                stack.add(nextCard)
-//                previousCard = nextCard
-//
-//                if (stack.size >= LadderAnalyser.MIN_SIZE){
-//                    // our stack is actually already a valid ladder, so add it as well
-//                    out.add(stack.toMutableList())
-//                }
-//            } else {
-//                // no luck, ladder has to stop here
-//                break
-//            }
-//        }
-//
-//        // finished counting now, see if this is a valid count
-//        if (stack.size >= LadderAnalyser.MIN_SIZE){
-//            out.add(stack)
-//        }
+        // use very similar logic to LadderAnalyser here
+        while (true){
+            // try and see if we can count to another card
+            val nextGroup = getNextGroup(previousGroup, groups)
+            if (nextGroup != null){
+                // we can keep counting, update and continue
+                stack.add(nextGroup)
+                previousGroup = nextGroup
+
+                if (stack.size >= MIN_SIZE){
+                    // our stack is actually already a valid ladder, so add it as well
+                    ladders.add(stack.toMutableList())
+                }
+            } else {
+                // no luck, ladder has to stop here
+                break
+            }
+        }
+
+        // finished counting now, see if this is a valid count
+        if (stack.size >= MIN_SIZE){
+            ladders.add(stack)
+        }
+
+        // add to output (have to flatpack first)
+        for (item in ladders) {
+            out.add(item.flatten())
+        }
     }
 
     override fun analyseHand(hand: List<String>): List<List<String>> {
@@ -57,15 +67,21 @@ class NeighboursAnalyser : HandAnalyser {
         val pairsTriples = SameCardAnalyser().analyseHand(hand)
         val pairs = pairsTriples.filter { it.size == 2 }
         val triples = pairsTriples.filter { it.size == 3 }
+        val out = mutableListOf<List<String>>()
 
         for (pair in pairs){
-            // try to get a ladder
+            addLadder(pairs, pair, out)
         }
 
         for (triple in triples){
-            // try to get a ladder
+            addLadder(triples, triple, out)
         }
 
-        return listOf()
+        return out
+    }
+
+    companion object {
+        /** Minimum number of groups to form a valid move (e.g. in this case `[[K, K], [Q,Q]]` */
+        private const val MIN_SIZE = 2
     }
 }

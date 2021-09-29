@@ -5,7 +5,8 @@ object Analysis {
         SinglesAnalyser(),
         SameCardAnalyser(),
         LadderAnalyser(),
-        BombAnalyser()
+        BombAnalyser(),
+        NeighboursAnalyser()
     )
 
     /**

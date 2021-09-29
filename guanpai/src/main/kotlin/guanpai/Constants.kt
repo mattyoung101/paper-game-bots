@@ -36,5 +36,7 @@ enum class MoveType {
     DOUBLE,
     TRIPLE,
     LADDER,
+    DOUBLE_LADDER,
+    TRIPLE_LADDER,
     BOMB
 }
