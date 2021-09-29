@@ -1,16 +1,17 @@
 package guanpai.strategy
 
 import guanpai.CARDS
-import guanpai.Opponent
+import guanpai.Move
+import guanpai.Player
 import kotlin.math.max
 
 object MoveEvaluator {
     /**
      * Returns the total card value of the move
      */
-    private fun getCardValue(move: List<String>): Double {
-        // we consider cards 3-10 as worth the same amount (1.0)
-        return move.sumOf { max(1, CARDS.indexOf(it) - CARDS.indexOf("10")) }.toDouble()
+    private fun getMoveCardValue(move: Move): Double {
+        // we consider cards 3-10 as worth the same amount (1.0) TODO is this a good idea?
+        return move.cards.sumOf { max(1, CARDS.indexOf(it) - CARDS.indexOf("10")) }.toDouble()
     }
 
     /**
@@ -19,17 +20,30 @@ object MoveEvaluator {
      * @param turns number of turns we have played
      * @param opponents opponents info
      */
-    fun evaluateMove(move: List<String>, turns: Int, opponents: List<Opponent>): Double {
+    fun evaluateMove(move: Move, turns: Int, opponents: List<Player>): Double {
         // what we want to do is: minimise value of cards, while maximising number of cards
         // this is an ill-defined problem: https://cs.stackexchange.com/a/52081
         // unless we use multi-objective optimisation, the best approach is to do f(x,y) = ... where x is num cards
         // and y is total value (so a 3D function)
-        return getCardValue(move)//2.0 * move.size - 0.5 * getMoveValue(move)
+        val value = getMoveCardValue(move)
 
         // early game: prioritise getting out biggest stack possible that is not a bomb, also no 2 allowed
         // mid game: try to get out big stacks of lower-valued cards, king is ok too, preferably no 2
         // late game: if an opponent is low on cards, spam out high cards, otherwise try to dump low value cards
         // to decide which phase we are in: number of cards opponent with lowest number has
+//        when (opponents.minOf { it.cards }) {
+//            in MID_GAME_CARDS..16 -> {
+//                // early game
+//            }
+//            in LATE_GAME_CARDS until MID_GAME_CARDS -> {
+//                // mid game
+//            }
+//            else -> {
+//                // late game
+//            }
+//        }
+
+        return value
     }
 
     /**

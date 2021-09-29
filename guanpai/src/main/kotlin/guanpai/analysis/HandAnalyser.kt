@@ -1,5 +1,7 @@
 package guanpai.analysis
 
+import guanpai.Move
+
 interface HandAnalyser {
     /**
      * Generates a list of possible moves of this type for the given hand.
@@ -10,5 +12,5 @@ interface HandAnalyser {
      * necessarily be unique. For example, in the hand [4,4,4,4] there are two possible pairs of fours.
      * @return list of possible moves that could be played
      */
-    fun analyseHand(hand: List<String>): List<List<String>>
+    fun analyseHand(hand: List<String>): List<Move>
 }

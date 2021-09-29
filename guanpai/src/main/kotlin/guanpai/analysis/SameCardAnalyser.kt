@@ -1,11 +1,14 @@
 package guanpai.analysis
 
+import guanpai.Move
+import guanpai.MoveType
+
 /**
  * Generates pairs or triples of the same card, e.g. (Q,Q) or (Q,Q,Q)
  */
 class SameCardAnalyser : HandAnalyser {
-    override fun analyseHand(hand: List<String>): List<List<String>> {
-        val out = mutableListOf<List<String>>()
+    override fun analyseHand(hand: List<String>): List<Move> {
+        val out = mutableListOf<Move>()
 
         // generate a map of the number of times each card occurs in the hand
         // performance: may be a more optimal method for this
@@ -23,30 +26,18 @@ class SameCardAnalyser : HandAnalyser {
                 val groups = count / 2
                 for (i in 0 until groups){
                     // size of group is hardcoded, that's ok
-                    out.add(listOf(card, card))
+                    out.add(Move(listOf(card, card), MoveType.DOUBLE))
                 }
             } else if (count % 3 == 0){
                 // generate triples
                 val groups = count / 3
                 for (i in 0 until groups){
-                    out.add(listOf(card, card, card))
+                    out.add(Move(listOf(card, card, card), MoveType.TRIPLE))
                 }
                 // TODO need to consider +1 or +2 (do we?)
             }
         }
 
-//        for ((i, card) in hand.withIndex()){
-//            // copy list and remove the card we are currently considering
-//            // speed improvement: it may be possible to remove this copy, and instead exclude it by index below
-//            val copy = hand.toMutableList()
-//            copy.removeAt(i)
-//
-//            // now see if we have another card of this type in the hand
-//            val other = copy.firstOrNull { it == card }
-//            if (other != null){
-//                out.add(mutableListOf(card, other))
-//            }
-//        }
-        return out.toList()
+        return out
     }
 }

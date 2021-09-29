@@ -1,6 +1,8 @@
 package guanpai.analysis
 
 import guanpai.CARDS
+import guanpai.Move
+import guanpai.MoveType
 
 /**
  * Generates neighbouring pairs or triples, such as (Q,Q,K,K) or (Q,Q,Q,K,K,K)
@@ -23,7 +25,7 @@ class NeighboursAnalyser : HandAnalyser {
     /**
      * Generates a possible ladder with the given card groups (e.g. twos or threes) and adds to the output
      */
-    private fun addLadder(groups: List<List<String>>, initial: List<String>, out: MutableList<List<String>>) {
+    private fun addLadder(groups: List<List<String>>, initial: List<String>, out: MutableList<Move>) {
         // ladders must be unique, we will still get correct output if there are duplicate cards in the hand
         // since we check them twice in the function that calls addLadder
         val ladders = mutableSetOf<List<List<String>>>()
@@ -57,17 +59,17 @@ class NeighboursAnalyser : HandAnalyser {
 
         // add to output (have to flatpack first)
         for (item in ladders) {
-            out.add(item.flatten())
+            out.add(Move(item.flatten(), MoveType.NEIGHBOUR_LADDER))
         }
     }
 
-    override fun analyseHand(hand: List<String>): List<List<String>> {
+    override fun analyseHand(hand: List<String>): List<Move> {
         // internally we will actually use the SameCardAnalyser to grab a list of pairs/triples
         // performance: it may be possible to cache the output of SameCardAnalyser() instead of running it twice
-        val pairsTriples = SameCardAnalyser().analyseHand(hand)
+        val pairsTriples = SameCardAnalyser().analyseHand(hand).map { it.cards }
         val pairs = pairsTriples.filter { it.size == 2 }
         val triples = pairsTriples.filter { it.size == 3 }
-        val out = mutableListOf<List<String>>()
+        val out = mutableListOf<Move>()
 
         for (pair in pairs){
             addLadder(pairs, pair, out)

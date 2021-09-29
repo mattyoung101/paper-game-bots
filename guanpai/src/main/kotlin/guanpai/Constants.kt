@@ -30,13 +30,12 @@ private val suite = arrayOf("3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "
  */
 val DECK = arrayOf(*suite, *suite, *suite, *suite, "A", "A", "A", "2")
 
-// may need this in future to score moves
 enum class MoveType {
     SINGLE,
     DOUBLE,
     TRIPLE,
     LADDER,
-    DOUBLE_LADDER,
-    TRIPLE_LADDER,
+    // e.g. (Q,Q,K,K)
+    NEIGHBOUR_LADDER,
     BOMB
 }

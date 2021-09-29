@@ -2,6 +2,8 @@ package guanpai.analysis
 
 import guanpai.CARDS
 import guanpai.CARD_COMPARATOR
+import guanpai.Move
+import guanpai.MoveType
 
 /**
  * Generates counting chains like (4,5,6,7,8). Note that this class returns every valid (i.e. n >= 5) ladder of cards
@@ -17,10 +19,10 @@ class LadderAnalyser : HandAnalyser {
         return hand.firstOrNull { scoreCard(it) - scoreCard(current) == 1 }
     }
 
-    override fun analyseHand(hand: List<String>): List<List<String>> {
+    override fun analyseHand(hand: List<String>): List<Move> {
         // store output as set to enforce unique stacks of cards
         // TODO check if should be unique
-        val out = mutableSetOf<List<String>>()
+        val out = mutableSetOf<Move>()
         // TODO may not actually need to sort hand? (with new algorithm)
         val sortedHand = hand.sortedWith(CARD_COMPARATOR)
 
@@ -40,7 +42,7 @@ class LadderAnalyser : HandAnalyser {
 
                     if (stack.size >= MIN_SIZE){
                         // our stack is actually already a valid ladder, so add it as well
-                        out.add(stack.toMutableList())
+                        out.add(Move(stack.toMutableList(), MoveType.LADDER))
                     }
                 } else {
                     // no luck, ladder has to stop here
@@ -50,7 +52,7 @@ class LadderAnalyser : HandAnalyser {
 
             // finished counting now, see if this is a valid count
             if (stack.size >= MIN_SIZE){
-                out.add(stack)
+                out.add(Move(stack, MoveType.LADDER))
             }
         }
 
