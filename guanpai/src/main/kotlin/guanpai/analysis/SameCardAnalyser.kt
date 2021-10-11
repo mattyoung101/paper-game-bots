@@ -34,7 +34,7 @@ class SameCardAnalyser : HandAnalyser {
                 for (i in 0 until groups){
                     out.add(Move(listOf(card, card, card), MoveType.TRIPLE))
                 }
-                // TODO need to consider +1 or +2 (do we?)
+                // TODO need to consider +1 or +2
             }
         }
 

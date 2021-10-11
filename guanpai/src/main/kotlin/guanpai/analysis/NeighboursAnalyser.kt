@@ -79,6 +79,8 @@ class NeighboursAnalyser : HandAnalyser {
             addLadder(triples, triple, out)
         }
 
+        // TODO consider +1, +2 singles
+
         return out
     }
 
