@@ -11,16 +11,20 @@ object MoveEvaluator {
      */
     private fun getMoveCardValue(move: Move): Double {
         // we consider cards 3-10 as worth the same amount (1.0) TODO is this a good idea?
-        return move.cards.sumOf { max(1, CARDS.indexOf(it) - CARDS.indexOf("10")) }.toDouble()
+        return move.cards.sumOf { CARDS.indexOf(it) }.toDouble()
     }
+
+    // TODO change this class so it just returns the best move/best N moves (as a heuristic) instead of ranking them
+    // we could have MoveHeuristic which is designed for using in Monte Carlo, and InterestingMoveSelector which selects
+    // at most 25 "interesting" moves to sample monte-carlo
 
     /**
      * Evaluates the specified [move], returning a score (higher is more ideal to play). This is only a heuristic,
      * it is not a perfectly valid score of which to play.
      * @param turns number of turns we have played
-     * @param opponents opponents info
+     * @param players all players including self
      */
-    fun evaluateMove(move: Move, turns: Int, opponents: List<Player>): Double {
+    fun evaluateMove(move: Move, turns: Int, players: List<Player>): Double {
         // what we want to do is: minimise value of cards, while maximising number of cards
         // this is an ill-defined problem: https://cs.stackexchange.com/a/52081
         // unless we use multi-objective optimisation, the best approach is to do f(x,y) = ... where x is num cards

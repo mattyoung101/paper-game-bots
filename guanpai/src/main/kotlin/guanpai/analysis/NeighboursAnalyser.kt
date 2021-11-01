@@ -79,7 +79,7 @@ class NeighboursAnalyser : HandAnalyser {
             addLadder(triples, triple, out)
         }
 
-        // TODO consider +1, +2 singles
+        // TODO consider +1 (any card), +2 (neighbours)
 
         return out
     }

@@ -30,6 +30,9 @@ private val suite = arrayOf("3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "
  */
 val DECK = arrayOf(*suite, *suite, *suite, *suite, "A", "A", "A", "2")
 
+/**
+ * Category of move
+ */
 enum class MoveType {
     SINGLE,
     DOUBLE,
@@ -37,5 +40,13 @@ enum class MoveType {
     LADDER,
     // e.g. (Q,Q,K,K)
     NEIGHBOUR_LADDER,
-    BOMB
+    BOMB,
+    PASS,
+    UNKNOWN
+}
+
+enum class PlayerType {
+    AI,
+    OPP_1,
+    OPP_2
 }

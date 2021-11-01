@@ -8,6 +8,8 @@ import guanpai.MoveType
 /**
  * Generates counting chains like (4,5,6,7,8). Note that this class returns every valid (i.e. n >= 5) ladder of cards
  * separately, so it would return a count of 4, then 5, then 6, etc
+ *
+ * FIXME not allowed to include "2" in this ladder
  */
 class LadderAnalyser : HandAnalyser {
     private fun scoreCard(card: String): Int {

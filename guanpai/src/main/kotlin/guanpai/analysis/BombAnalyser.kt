@@ -5,6 +5,7 @@ import guanpai.MoveType
 
 /**
  * Finds bombs: triple ace, or four of any card. Also, there is a potential +1 for any other card
+ * FIXME this is bugged, see: 3 4 6 7 8 8 9 9 9 9 10 J J Q K K
  */
 class BombAnalyser : HandAnalyser {
     /** For each bomb, we can also add +1 of any card, so consider that here */

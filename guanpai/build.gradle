@@ -9,6 +9,15 @@ repositories {
     mavenCentral()
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    testImplementation 'junit:junit:4.13'
+}
+
+test {
+    useJUnit()
 }
