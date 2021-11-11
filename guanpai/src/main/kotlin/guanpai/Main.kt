@@ -1,6 +1,10 @@
 package guanpai
 
 import guanpai.analysis.Analysis
+import guanpai.game.ConsoleGame
+import guanpai.game.Move
+import guanpai.game.Player
+import guanpai.strategy.MonteCarloSimulation
 import guanpai.strategy.MoveComparator
 import guanpai.strategy.MoveSelector
 import java.util.*
@@ -12,9 +16,10 @@ fun main(args: Array<String>){
 
     // prompt for initial hand
     print("Enter AI starting hand: ")
+    // practice set: 3 3 5 6 6 7 7 8 8 9 10 J Q K A A
     val myCards = scanner.nextLine().split(" ").toMutableList()
     if (myCards.size != 16) {
-        println("Error: Invalid number of cards (you entered: ${myCards.size})")
+        System.err.println("Error: Invalid number of cards (you entered: ${myCards.size})")
         exitProcess(1)
     }
 
@@ -22,9 +27,13 @@ fun main(args: Array<String>){
     print("Please input player ordering, using spaces [AI, OPP_1, OPP_2]: ")
     val players = scanner.nextLine().uppercase().split(" ").map { Player(playerId = PlayerType.valueOf(it)) }
     val aiIndex = players.indexOfFirst { it.playerId == PlayerType.AI }
+    players[aiIndex].hand.addAll(myCards)
+
+    val game = ConsoleGame(players)
+    game.playGame()
 
     // game loop
-    while (true) {
+    /*while (true) {
         // print player info
         println("\nPlayers:")
         for (i in 0 until 3) {
@@ -52,6 +61,7 @@ fun main(args: Array<String>){
                     // first move
                     MoveSelector.selectOpeningMove(possibleMoves)
                 } else {
+                    MonteCarloSimulation.runSimulation(myCards, players, listOf())
                     Move(listOf(), MoveType.PASS)
                 }
                 println("***** AI's move: $move *****")
@@ -75,5 +85,5 @@ fun main(args: Array<String>){
         }
         // TODO not end of round until everyone passes
         println("End of round.")
-    }
+    }*/
 }

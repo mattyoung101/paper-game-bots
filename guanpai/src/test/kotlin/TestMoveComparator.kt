@@ -1,4 +1,4 @@
-import guanpai.Move
+import guanpai.game.Move
 import guanpai.MoveType
 import guanpai.strategy.MoveComparator
 import junit.framework.Assert.assertFalse

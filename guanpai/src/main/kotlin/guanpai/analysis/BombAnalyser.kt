@@ -1,6 +1,6 @@
 package guanpai.analysis
 
-import guanpai.Move
+import guanpai.game.Move
 import guanpai.MoveType
 
 /**

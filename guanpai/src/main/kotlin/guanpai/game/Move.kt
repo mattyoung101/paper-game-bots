@@ -1,4 +1,4 @@
-package guanpai
+package guanpai.game
 
 import guanpai.MoveType
 

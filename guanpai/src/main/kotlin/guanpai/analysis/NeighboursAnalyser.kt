@@ -1,7 +1,7 @@
 package guanpai.analysis
 
 import guanpai.CARDS
-import guanpai.Move
+import guanpai.game.Move
 import guanpai.MoveType
 
 /**
@@ -66,7 +66,14 @@ class NeighboursAnalyser : HandAnalyser {
     override fun analyseHand(hand: List<String>): List<Move> {
         // internally we will actually use the SameCardAnalyser to grab a list of pairs/triples
         // performance: it may be possible to cache the output of SameCardAnalyser() instead of running it twice
-        val pairsTriples = SameCardAnalyser().analyseHand(hand).map { it.cards }
+        val pairsTriples = SameCardAnalyser().analyseHand(hand).map { it.cards }.toMutableList()
+        // every triple is also a pair, so go through and add that
+        for (move in pairsTriples.filter { it.size == 3}) {
+            // always will be the same card
+            val card = move[0]
+            pairsTriples.add(listOf(card, card))
+        }
+
         val pairs = pairsTriples.filter { it.size == 2 }
         val triples = pairsTriples.filter { it.size == 3 }
         val out = mutableListOf<Move>()

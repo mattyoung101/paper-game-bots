@@ -1,7 +1,7 @@
 package guanpai
 
 import guanpai.analysis.Analysis
-import guanpai.strategy.MoveEvaluator
+import guanpai.strategy.MoveSelector
 
 fun main(args: Array<String>){
     val cards = DECK.toMutableList().shuffled().take(16).sortedWith(CARD_COMPARATOR)
@@ -10,6 +10,6 @@ fun main(args: Array<String>){
     val possibleMoves = Analysis.analyseAll(cards)
     println("Possible moves (${possibleMoves.size}):")
     for (move in possibleMoves){
-        println("$move - value: ${MoveEvaluator.evaluateMove(move, 0, listOf())}")
+        println("$move - value: ${MoveSelector.getMoveCardValue(move)}")
     }
 }

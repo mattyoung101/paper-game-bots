@@ -1,7 +1,7 @@
 package guanpai
 
 import guanpai.analysis.Analysis
-import guanpai.strategy.MoveEvaluator
+import guanpai.strategy.MoveSelector
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -20,7 +20,7 @@ fun main(args: Array<String>){
     while (true) {
         // generate possible moves
         println("\nRemaining cards: ${myCards.sortedWith(CARD_COMPARATOR).joinToString(" ")}")
-        val possibleMoves = Analysis.analyseAll(myCards).associateWith { MoveEvaluator.evaluateMove(it, 0, listOf()) }
+        val possibleMoves = Analysis.analyseAll(myCards).associateWith { MoveSelector.getMoveCardValue(it) }
         val sortedMoves = possibleMoves.keys.sortedByDescending { possibleMoves[it]!! }
         println("Possible moves (${possibleMoves.size}):")
 

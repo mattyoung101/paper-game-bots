@@ -1,7 +1,7 @@
 package guanpai.strategy
 
 import guanpai.CARD_COMPARATOR
-import guanpai.Move
+import guanpai.game.Move
 import guanpai.MoveType
 
 /**
