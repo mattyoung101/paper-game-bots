@@ -17,7 +17,3 @@ game.
 ## Results
 The project has been developed as part of a fun competition with my girlfriend (who is making her own implementation).
 Results will be available soon.
-
-# TODO
-
-- Triple and double

@@ -20,19 +20,18 @@ fun main(args: Array<String>){
     while (true) {
         // generate possible moves
         println("\nRemaining cards: ${myCards.sortedWith(CARD_COMPARATOR).joinToString(" ")}")
-        val possibleMoves = Analysis.analyseAll(myCards).associateWith { MoveSelector.getMoveCardValue(it) }
-        val sortedMoves = possibleMoves.keys.sortedByDescending { possibleMoves[it]!! }
+        val possibleMoves = Analysis.analyseAll(myCards)
         println("Possible moves (${possibleMoves.size}):")
 
         // display them
-        for ((i, move) in sortedMoves.withIndex()) {
-            println("$i) $move - value: ${possibleMoves[move]}")
+        for ((i, move) in possibleMoves.withIndex()) {
+            println("$i) $move - value: $move")
         }
 
         // remove user's selection
         print("Enter move selection: ")
         val move = scanner.nextLine().toInt()
-        val moveCards = sortedMoves[move].cards
+        val moveCards = possibleMoves[move].cards
         // do not use removeAll!
         for (card in moveCards) {
             myCards.remove(card)

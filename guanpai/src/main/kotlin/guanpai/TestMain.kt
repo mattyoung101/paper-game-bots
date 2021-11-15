@@ -10,6 +10,6 @@ fun main(args: Array<String>){
     val possibleMoves = Analysis.analyseAll(cards)
     println("Possible moves (${possibleMoves.size}):")
     for (move in possibleMoves){
-        println("$move - value: ${MoveSelector.getMoveCardValue(move)}")
+        println(move)
     }
 }
