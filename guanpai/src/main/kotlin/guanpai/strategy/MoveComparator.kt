@@ -16,7 +16,7 @@ object MoveComparator {
     fun canBeat(suggestion: Move, target: Move): Boolean {
         // bomb can beat anything
         if (suggestion.type == MoveType.BOMB) return true
-        // moves must be same number of cards
+        // moves must be same number of cards (implies same move as well)
         if (suggestion.cards.size != target.cards.size) return false
         // first card must be higher value
         return CARD_COMPARATOR.compare(suggestion.cards[0], target.cards[0]) > 0

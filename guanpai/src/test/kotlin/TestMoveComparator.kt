@@ -43,4 +43,11 @@ class TestMoveComparator {
         assertTrue(MoveComparator.canBeat(suggestion, target))
         assertTrue(MoveComparator.canBeat(suggestion2, target))
     }
+
+    @Test
+    fun testBug() {
+        val a = Move(listOf("10", "10"), MoveType.DOUBLE)
+        val b = Move(listOf("K", "K"), MoveType.DOUBLE)
+        assertFalse(MoveComparator.canBeat(a, b))
+    }
 }

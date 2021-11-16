@@ -32,13 +32,11 @@ class MoveSelector(private val shouldPrint: Boolean) {
         // find the opponent with the minimum number of cards (excluding AI)
         val opponentMin = allPlayers.filter { it.playerId != PlayerType.AI }.minByOrNull { it.cards }!!.cards
         return if (opponentMin <= LATE_GAME_CARDS) {
-            // it's late game, block the opponent from moving
-            // TODO don't block ourselves moving! if we have the advantage, play cheap cards!
-            // TODO change this to be, if we are starting a round and its late game, play all our expensive cards
-            gprintln("Using costliest move strategy (opponentMin = $opponentMin)")
+            // it's late game, attempt to block the opponent from moving by winning the round, so we can go next
+            gprintln("Using costliest move strategy (opponent min cards = $opponentMin)")
             selectCostliestMove(allMoves, toBeat) ?: Move(listOf(), MoveType.PASS)
         } else {
-            // it's early game, return the cheapest move that beats the last played move
+            // it's early game, or we have the lead, return the cheapest move that beats the last played move
             gprintln("Using cheapest move strategy")
             selectCheapestMove(allMoves, toBeat) ?: Move(listOf(), MoveType.PASS)
         }
@@ -52,12 +50,12 @@ class MoveSelector(private val shouldPrint: Boolean) {
     }
 
     /**
-     * Select the move with the highest number of cards that does not include ace or two (if possible)
+     * Select the move with the highest number of cards that does not include ace or two and is not a bomb (if possible)
      */
     private fun selectOpeningMove(possibleMoves: List<Move>): Move {
         // first, attempt to return a set without using ace or two
-        return possibleMoves.filter { !("A" in it.cards || "2" in it.cards) }.maxByOrNull { it.cards.size }
-            ?: // the only option is to return a set that uses an ace or two
+        return possibleMoves.filter { !("A" in it.cards || "2" in it.cards) && it.type != MoveType.BOMB }.maxByOrNull { it.cards.size }
+            ?: // the only option is to return a set that uses an ace or two, or bomb, so return that
             possibleMoves.maxByOrNull { it.cards.size }!!
     }
 
@@ -79,6 +77,6 @@ class MoveSelector(private val shouldPrint: Boolean) {
         /**
          * If an opponent has <= this many cards, it's late game
          */
-        private const val LATE_GAME_CARDS = 4
+        private const val LATE_GAME_CARDS = 5
     }
 }
