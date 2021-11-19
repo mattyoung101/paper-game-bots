@@ -20,8 +20,6 @@ abstract class Game(protected val players: MutableList<Player>, private val shou
 
     protected fun gprintln() { gprintln("") }
 
-    // TODO support changing which player should go first
-
     /**
      * Plays one round of Guan Pai
      * @return the player who won the round

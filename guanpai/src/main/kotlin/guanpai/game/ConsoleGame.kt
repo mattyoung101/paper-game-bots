@@ -25,7 +25,7 @@ class ConsoleGame(players: MutableList<Player>) : Game(players, true) {
             // play the round (important code here)
             val roundWinner = playRound()
             gprintln("***** End of round, won by ${roundWinner.playerId} *****\n")
-            // re arrange players so that the winner of the round plays first
+            // rearrange players so that the winner of the round plays first
             reArrangePlayers(roundWinner)
 
             val minPlayer = players.minByOrNull { it.cards }!!
@@ -47,7 +47,7 @@ class ConsoleGame(players: MutableList<Player>) : Game(players, true) {
             }*/
 
             // select move (TODO in future use monte carlo simulation)
-            val move = moveSelector.selectMove(player, possibleMoves, previousMove, allPlayers)
+            val move = moveSelector.selectMove(player.playerId, possibleMoves, previousMove, allPlayers)
             if (move.cards.isEmpty()) {
                 gprintln("Move for AI: PASS")
             } else {

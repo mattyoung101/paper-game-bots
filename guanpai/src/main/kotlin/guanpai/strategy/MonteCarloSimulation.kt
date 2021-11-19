@@ -23,6 +23,7 @@ object MonteCarloSimulation {
         val results = ConcurrentLinkedQueue<Int>()
         for (i in 0 until NUM_GAMES) {
             executor.execute {
+                // TODO this should not be winning player .cards()
                 results.add(AutomatedGame(move, players).playGame().cards)
             }
         }

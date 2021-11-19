@@ -17,20 +17,20 @@ class MoveSelector(private val shouldPrint: Boolean) {
 
     /**
      * Uses a heuristic to select a semi-OK move. Used in Monte-Carlo simulation.
-     * @param player AI player to select move for
+     * @param playerId id of player we are selecting move for
      * @param allMoves list of all possible moves that could be played by the current cards in the hand
      * @param toBeat move to beat, or null
      * @param allPlayers all players in the game, including the AI player
      * @returns the move, never null
      */
-    fun selectMove(player: Player, allMoves: List<Move>, toBeat: Move?, allPlayers: List<Player>): Move {
+    fun selectMove(playerId: PlayerType, allMoves: List<Move>, toBeat: Move?, allPlayers: List<Player>): Move {
         if (toBeat == null) {
             gprintln("Using opening move strategy")
             return selectOpeningMove(allMoves)
         }
 
-        // find the opponent with the minimum number of cards (excluding AI)
-        val opponentMin = allPlayers.filter { it.playerId != PlayerType.AI }.minByOrNull { it.cards }!!.cards
+        // find the opponent with the minimum number of cards (excluding ourselves)
+        val opponentMin = allPlayers.filter { it.playerId != playerId }.minByOrNull { it.cards }!!.cards
         return if (opponentMin <= LATE_GAME_CARDS) {
             // it's late game, attempt to block the opponent from moving by winning the round, so we can go next
             gprintln("Using costliest move strategy (opponent min cards = $opponentMin)")
