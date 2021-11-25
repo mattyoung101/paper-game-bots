@@ -16,8 +16,8 @@ class TestMoveComparator {
 
     @Test
     fun testSlightlyMoreComplicated() {
-        val target = Move(listOf("J", "J", "Q", "Q"), MoveType.NEIGHBOUR_LADDER)
-        val suggestion = Move(listOf("Q", "Q", "K", "K"), MoveType.NEIGHBOUR_LADDER)
+        val target = Move(listOf("J", "J", "Q", "Q"), MoveType.NEIGHBOUR_LADDER_DOUBLE)
+        val suggestion = Move(listOf("Q", "Q", "K", "K"), MoveType.NEIGHBOUR_LADDER_DOUBLE)
 
         assertTrue(MoveComparator.canBeat(suggestion, target))
     }
@@ -36,7 +36,7 @@ class TestMoveComparator {
 
     @Test
     fun testBomb() {
-        val target = Move(listOf("J", "J", "Q", "Q"), MoveType.NEIGHBOUR_LADDER)
+        val target = Move(listOf("J", "J", "Q", "Q"), MoveType.NEIGHBOUR_LADDER_DOUBLE)
         val suggestion = Move(listOf("A", "A", "A"), MoveType.BOMB)
         val suggestion2 = Move(listOf("K", "K", "K", "K"), MoveType.BOMB)
 

@@ -3,6 +3,8 @@ package guanpai.analysis
 import guanpai.CARDS
 import guanpai.game.Move
 import guanpai.MoveType
+import guanpai.considerPlusOnes
+import guanpai.considerPlusTwos
 
 /**
  * Generates neighbouring pairs or triples, such as (Q,Q,K,K) or (Q,Q,Q,K,K,K)
@@ -24,8 +26,9 @@ class NeighboursAnalyser : HandAnalyser {
 
     /**
      * Generates a possible ladder with the given card groups (e.g. twos or threes) and adds to the output
+     * @param type one of NEIGHBOUR_LADDER_TRIPLE or NEIGHBOUR_LADDER_DOUBLE
      */
-    private fun addLadder(groups: List<List<String>>, initial: List<String>, out: MutableList<Move>) {
+    private fun addLadder(groups: List<List<String>>, initial: List<String>, out: MutableList<Move>, type: MoveType) {
         // ladders must be unique, we will still get correct output if there are duplicate cards in the hand
         // since we check them twice in the function that calls addLadder
         val ladders = mutableSetOf<List<List<String>>>()
@@ -59,14 +62,14 @@ class NeighboursAnalyser : HandAnalyser {
 
         // add to output (have to flatpack first)
         for (item in ladders) {
-            out.add(Move(item.flatten(), MoveType.NEIGHBOUR_LADDER))
+            out.add(Move(item.flatten(), type))
         }
     }
 
     override fun analyseHand(hand: List<String>): List<Move> {
         // internally we will actually use the SameCardAnalyser to grab a list of pairs/triples
         // performance: it may be possible to cache the output of SameCardAnalyser() instead of running it twice
-        val pairsTriples = SameCardAnalyser().analyseHand(hand).map { it.cards }.toMutableList()
+        val pairsTriples = SameCardAnalyser(false).analyseHand(hand).map { it.cards }.toMutableList()
         // every triple is also a pair, so go through and add that
         for (move in pairsTriples.filter { it.size == 3}) {
             // always will be the same card
@@ -79,14 +82,20 @@ class NeighboursAnalyser : HandAnalyser {
         val out = mutableListOf<Move>()
 
         for (pair in pairs){
-            addLadder(pairs, pair, out)
+            addLadder(pairs, pair, out, MoveType.NEIGHBOUR_LADDER_DOUBLE)
         }
-
         for (triple in triples){
-            addLadder(triples, triple, out)
+            addLadder(triples, triple, out, MoveType.NEIGHBOUR_LADDER_TRIPLE)
         }
 
-        // TODO consider +1 (any card), +2 (neighbours)
+        // consider plus twos only on triples
+        val it = out.listIterator()
+        while (it.hasNext()) {
+            val move = it.next()
+            // try to detect if it's a triple (hack)
+            if (move.type != MoveType.NEIGHBOUR_LADDER_TRIPLE) continue
+            considerPlusTwos(it, move, hand, move.type)
+        }
 
         return out
     }

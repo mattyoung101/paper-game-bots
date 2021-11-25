@@ -2,26 +2,13 @@ package guanpai.analysis
 
 import guanpai.game.Move
 import guanpai.MoveType
+import guanpai.considerPlusOnes
 
 /**
  * Finds bombs: triple ace, or four of any card. Also, there is a potential +1 for any other card
  * FIXME this is bugged, see: 3 4 6 7 8 8 9 9 9 9 10 J J Q K K
  */
 class BombAnalyser : HandAnalyser {
-    /** For each bomb, we can also add +1 of any card, so consider that here */
-    private fun considerPlusOnes(out: MutableList<Move>, move: List<String>, hand: List<String>){
-        // create a copy of the hand with the first occurrence of each card in the bomb removed
-        // performance: may be a more optimal method than copy and removeAll
-        val handWithoutMove = hand.toMutableList()
-        handWithoutMove.removeAll(move)
-
-        for (card in handWithoutMove){
-            // copy the move and return a new one with this particular +1
-            val newMove = move.toMutableList().apply { add(card) }
-            out.add(Move(newMove, MoveType.BOMB))
-        }
-    }
-
     override fun analyseHand(hand: List<String>): List<Move> {
         val out = mutableListOf<Move>()
 
@@ -29,7 +16,7 @@ class BombAnalyser : HandAnalyser {
         val aces = hand.filter { it == "A" }
         if (aces.size == 3){
             out.add(Move(aces, MoveType.BOMB))
-            considerPlusOnes(out, aces, hand)
+            considerPlusOnes(out, aces, hand, MoveType.BOMB)
         }
 
         // now check for 4 of any card
@@ -41,7 +28,7 @@ class BombAnalyser : HandAnalyser {
             if (matchingCards.size == 4){
                 // have 4 of the same card, so bomb!
                 out.add(Move(matchingCards, MoveType.BOMB))
-                considerPlusOnes(out, matchingCards, handNoAces)
+                considerPlusOnes(out, matchingCards, handNoAces, MoveType.BOMB)
             }
         }
 

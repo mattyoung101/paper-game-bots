@@ -2,11 +2,13 @@ package guanpai.analysis
 
 import guanpai.game.Move
 import guanpai.MoveType
+import guanpai.considerPlusOnes
 
 /**
  * Generates pairs or triples of the same card, e.g. (Q,Q) or (Q,Q,Q)
+ * @param shouldConsiderExtra if we should consider +1, +2, etc
  */
-class SameCardAnalyser : HandAnalyser {
+class SameCardAnalyser(private val shouldConsiderExtra: Boolean = true) : HandAnalyser {
     override fun analyseHand(hand: List<String>): List<Move> {
         val out = mutableListOf<Move>()
 
@@ -34,9 +36,21 @@ class SameCardAnalyser : HandAnalyser {
                 for (i in 0 until groups){
                     out.add(Move(listOf(card, card, card), MoveType.TRIPLE))
                 }
-                // TODO need to consider +1 or +2
+                // TODO consider plus twos
             }
         }
+
+        // consider plus ones on triples
+        if (shouldConsiderExtra) {
+            val it = out.listIterator()
+            while (it.hasNext()) {
+                val move = it.next()
+                if (move.type != MoveType.TRIPLE) continue
+                considerPlusOnes(it, move, hand, move.type)
+            }
+        }
+
+        // TODO consider plus two on triples
 
         return out
     }

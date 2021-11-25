@@ -54,9 +54,10 @@ class AutomatedGame(private val move: Move, players: List<Player>) : Game(player
         val remainingCards = findRemainingCards(allKnownCards)
         remainingCards.shuffle(prng)
         for (player in players) {
+            // AI's cards are already known, no need to edit
             if (player.playerId == PlayerType.AI) continue
             for (i in 1..player.cards) {
-                // grab the first card off the remaining cards list
+                // grab the first card off the shuffled remaining cards list
                 player.hand.add(remainingCards.pop())
             }
         }

@@ -21,4 +21,6 @@ object MoveComparator {
         // first card must be higher value
         return CARD_COMPARATOR.compare(suggestion.cards[0], target.cards[0]) > 0
     }
+    // TODO fix triple + 1
+    // example: Ella plays [8, 8, 8, 7], AI attempts [K, K, A, A]
 }

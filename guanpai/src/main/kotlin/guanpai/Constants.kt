@@ -39,7 +39,9 @@ enum class MoveType {
     TRIPLE,
     LADDER,
     // e.g. (Q,Q,K,K)
-    NEIGHBOUR_LADDER,
+    NEIGHBOUR_LADDER_DOUBLE,
+    // e.g. Q,Q,Q,K,K,K
+    NEIGHBOUR_LADDER_TRIPLE,
     BOMB,
     PASS,
     UNKNOWN
