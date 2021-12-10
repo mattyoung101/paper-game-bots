@@ -23,4 +23,5 @@ object MoveComparator {
     }
     // TODO fix triple + 1
     // example: Ella plays [8, 8, 8, 7], AI attempts [K, K, A, A]
+    // TODO fix this: [7, 7, 8 8] it tries [K, K, K, 3]
 }

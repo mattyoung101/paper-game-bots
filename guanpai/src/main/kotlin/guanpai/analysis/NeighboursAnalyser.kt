@@ -92,7 +92,7 @@ class NeighboursAnalyser : HandAnalyser {
         val it = out.listIterator()
         while (it.hasNext()) {
             val move = it.next()
-            // try to detect if it's a triple (hack)
+            // skip if not triple
             if (move.type != MoveType.NEIGHBOUR_LADDER_TRIPLE) continue
             considerPlusTwos(it, move, hand, move.type)
         }

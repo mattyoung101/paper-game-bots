@@ -46,8 +46,25 @@ class TestMoveComparator {
 
     @Test
     fun testBug() {
+        // 10,10 cannot beat K,K
         val a = Move(listOf("10", "10"), MoveType.DOUBLE)
         val b = Move(listOf("K", "K"), MoveType.DOUBLE)
         assertFalse(MoveComparator.canBeat(a, b))
+    }
+
+    @Test
+    fun testBug2() {
+        // [7, 7, 8 8] it tries [K, K, K, 3]
+        val a = Move(listOf("7", "7", "8", "8"), MoveType.NEIGHBOUR_LADDER_DOUBLE)
+        val b = Move(listOf("K", "K", "K", "3"), MoveType.TRIPLE)
+        assertFalse(MoveComparator.canBeat(b, a))
+    }
+
+    @Test
+    fun testBug3() {
+        // Ella plays [8, 8, 8, 7], AI attempts [K, K, A, A]
+        val a = Move(listOf("8", "8", "8", "7"), MoveType.TRIPLE)
+        val b = Move(listOf("K", "K", "A", "A"), MoveType.NEIGHBOUR_LADDER_DOUBLE)
+        assertFalse(MoveComparator.canBeat(b, a))
     }
 }

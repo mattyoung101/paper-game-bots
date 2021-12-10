@@ -36,6 +36,7 @@ val DECK = arrayOf(*suite, *suite, *suite, *suite, "A", "A", "A", "2")
 enum class MoveType {
     SINGLE,
     DOUBLE,
+    // e.g. (Q,Q,Q) or (Q,Q,Q,K)
     TRIPLE,
     LADDER,
     // e.g. (Q,Q,K,K)
