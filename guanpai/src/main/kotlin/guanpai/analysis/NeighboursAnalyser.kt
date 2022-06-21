@@ -100,6 +100,10 @@ class NeighboursAnalyser : HandAnalyser {
         return out
     }
 
+    override fun isMove(hand: Map<String, Int>): MoveType? {
+        return null
+    }
+
     companion object {
         /** Minimum number of groups to form a valid move (e.g. in this case `[[K, K], [Q,Q]]` */
         private const val MIN_SIZE = 2

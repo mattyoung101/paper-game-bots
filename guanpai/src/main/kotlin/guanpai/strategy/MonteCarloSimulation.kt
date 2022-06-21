@@ -37,5 +37,5 @@ object MonteCarloSimulation {
     }
 
     /** Number of games to simulate for each call to runSimulation */
-    private const val NUM_GAMES = 256
+    private const val NUM_GAMES = 512
 }

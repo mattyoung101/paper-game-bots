@@ -58,3 +58,16 @@ fun considerPlusTwos(out: MutableListIterator<Move>, move: Move, hand: List<Stri
 
     uniqueMoves.forEach { out.add(it) }
 }
+
+/**
+ * Generate a map of the number of times each card occurs in the hand
+ */
+fun countCardsToMap(hand: List<String>): Map<String, Int> {
+    // performance: may be a more optimal method for this
+    val occurrences = hashMapOf<String, Int>()
+    val uniqueHand = hand.toSet()
+    for (card in uniqueHand){
+        occurrences[card] = hand.count { it == card }
+    }
+    return occurrences
+}

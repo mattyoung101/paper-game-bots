@@ -11,4 +11,8 @@ class SinglesAnalyser : HandAnalyser {
         return hand.map { Move(listOf(it), MoveType.SINGLE) }
     }
 
+    override fun isMove(hand: Map<String, Int>): MoveType? {
+        return if (hand.values.none { it != 1 }) MoveType.SINGLE else null
+    }
+
 }

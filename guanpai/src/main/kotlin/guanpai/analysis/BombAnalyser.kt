@@ -34,4 +34,14 @@ class BombAnalyser : HandAnalyser {
 
         return out
     }
+
+    override fun isMove(hand: Map<String, Int>): MoveType? {
+        // check three aces
+        if (hand.getOrDefault("A", 0) == 3) {
+            return MoveType.BOMB
+        }
+
+        // check for four of any card
+        return if (hand.values.contains(4)) MoveType.BOMB else null
+    }
 }

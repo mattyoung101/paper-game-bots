@@ -62,6 +62,22 @@ class LadderAnalyser : HandAnalyser {
         return out.toList()
     }
 
+    override fun isMove(hand: Map<String, Int>): MoveType? {
+        // first check each card only appears exactly once
+        val haveMultipleCards = hand.values.any { it != 1 }
+        if (haveMultipleCards) {
+            return null
+        }
+
+        // now check if we could form a ladder out of this
+        val ladders = analyseHand(hand.keys.toList())
+        return if (ladders.isNotEmpty()) {
+            MoveType.LADDER
+        } else {
+            null
+        }
+    }
+
     companion object {
         /** Minimum size to play a ladder */
         private const val MIN_SIZE = 5

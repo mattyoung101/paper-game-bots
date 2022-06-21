@@ -1,5 +1,6 @@
 package guanpai.analysis
 
+import guanpai.MoveType
 import guanpai.game.Move
 
 interface HandAnalyser {
@@ -13,4 +14,11 @@ interface HandAnalyser {
      * @return list of possible moves that could be played
      */
     fun analyseHand(hand: List<String>): List<Move>
+
+    /**
+     * Determines if the move specified is this move
+     * @param hand map of card to its count in the hand
+     * @return the type of this move if it is a move in this class, otherwise null
+     */
+    fun isMove(hand: Map<String, Int>): MoveType?
 }

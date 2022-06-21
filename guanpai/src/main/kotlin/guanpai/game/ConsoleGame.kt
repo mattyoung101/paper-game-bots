@@ -63,7 +63,7 @@ class ConsoleGame(players: MutableList<Player>) : Game(players, true) {
                 if (cardStr.isNotEmpty()) break
                 println("Sorry, please try again.")
             }
-            if (cardStr == "PASS") {
+            if (cardStr == "PASS" || cardStr == "P" || cardStr == "N") {
                 // pass
                 return Move(listOf(), MoveType.PASS)
             }
